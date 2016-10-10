@@ -44,7 +44,14 @@
 			// URL to list of words to show. If this is set to null,
 			// it will use the word list below instead.
 			// var wordsUrl = null;
-			var wordsUrl = "https://raw.githubusercontent.com/dwyl/english-words/master/words2.txt";
+			// URL with 355K words.
+			// var wordsUrl = https://raw.githubusercontent.com/dwyl/english-words/master/words.txt;
+			// URL with 235K words.
+			// var wordsUrl = "https://raw.githubusercontent.com/dwyl/english-words/master/words2.txt";
+			// This one is the 10000 most common used words on Google.
+			var wordsUrl = "https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa.txt"
+			// This one contains the 100000 most common words on Wictionary.
+			// var wordsUrl = "https://gist.githubusercontent.com/h3xx/1976236/raw/bbabb412261386673eff521dddbe1dc815373b1d/wiki-100k.txt"
 			// This is where your words go.
 			var words = [
 				"Foo",
@@ -93,7 +100,12 @@
 					xmlHttp.open("GET", wordsUrl, false ); // false for synchronous request
 					xmlHttp.send(null);
 					body = xmlHttp.responseText;
-					words = body.split(/[\s,\-\+\n\[\]\{\}&]/);
+					lines = body.split(/[\r\n]/);
+					// Remove comment lines.
+					lines.filter(function(s) { return s.charAt(0) == "#";});
+					body = lines.join();
+					// Get words.
+					words = body.split(/[\s,\-\+\[\]\{\}&]/);
 					words.filter(function(s) { return !s; });
 				}
 				return words;
