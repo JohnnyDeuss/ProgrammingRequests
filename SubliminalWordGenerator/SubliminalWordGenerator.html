@@ -34,13 +34,17 @@
 	</head>
 	<body>
 		<p class="word">
-			This word.
+			loading...
 		</p>
 		<script>
 			//
 			// Configuration.
 			//
 
+			// URL to list of words to show. If this is set to null,
+			// it will use the word list below instead.
+			// var wordsUrl = null;
+			var wordsUrl = "https://raw.githubusercontent.com/dwyl/english-words/master/words2.txt";
 			// This is where your words go.
 			var words = [
 				"Foo",
@@ -56,13 +60,44 @@
 			var msBetweenWords = 0;
 			// Whether to show words in a random order or in order.
 			var useRandomOrder = true;
+			// How to show the words, possible values are
+			// "uppercase", "lowercase", "capitalized" and "asis".
+			// The default is "capitalized".
+			var wordDisplay = "uppercase";
 
 
 			//
 			// Actual script.
 			//
 
+			// Translate configuration into something the script can use.
+			words = getWords();
 			var i = -1;
+
+
+			function transformFun(s) {
+				if (wordDisplay == "uppercase")
+					return s.toUpperCase();
+				else if (wordDisplay == "lowercase")
+					return s.toLowerCase();
+				else if (wordDisplay == "asis")
+					return s;
+				else
+					return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+			}
+
+
+			function getWords() {
+				if (wordsUrl !== null) {
+					var xmlHttp = new XMLHttpRequest();
+					xmlHttp.open("GET", wordsUrl, false ); // false for synchronous request
+					xmlHttp.send(null);
+					body = xmlHttp.responseText;
+					words = body.split(/[\s,\-\+\n\[\]\{\}&]/);
+					words.filter(function(s) { return !s; });
+				}
+				return words;
+			}
 
 			function hideWord() {
 				document.body.querySelector(".word").innerHTML = "";
@@ -80,7 +115,9 @@
 				}
 				else
 					i = ++i%words.length;
-				document.body.querySelector(".word").innerHTML = words[i];
+				word = words[i];
+				word = transformFun(words[i]);
+				document.body.querySelector(".word").innerHTML = word;
 				if (msBetweenWords == 0)
 					setTimeout(showWord, msWordShown);
 				else
