@@ -80,7 +80,6 @@
 				}
 				else
 					i = ++i%words.length;
-				console.log(i);
 				document.body.querySelector(".word").innerHTML = words[i];
 				if (msBetweenWords == 0)
 					setTimeout(showWord, msWordShown);
