@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>StatementIterator</title>
+		<style>
+			p {
+				font-family: sans-serif;
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+		</p>
+		<script>
+			//
+			// Configuration.
+			//
+
+			// These are the statements that will be shown.
+			var statements = [
+				"Statement 1",
+				"Statement 2",
+				"Statement 3",
+				"Statement 4",
+				"Statement 5",
+				"Statement 6",
+				"Statement 7",
+				"Statement 8",
+				"Statement 9",
+				"Statement 10",
+				"Statement 11",
+				"Statement 12",
+			];
+
+
+			//
+			// Actual script.
+			//
+
+			function nextWord() {
+				if (i != statements.length)
+					document.body.querySelector("p").innerHTML += statements[i++]+"</br>";
+			}
+
+
+			var i = 0;
+
+			// Add a key listener to switch to the next statement.
+			window.addEventListener("keydown", function(e) {
+				var key = e.keyCode ? e.keyCode : e.which;
+
+				if (key == 32) {
+					nextWord();
+					e.preventDefault();
+					return false;
+				}
+			});
+		</script>
+	<body>
+</html>
